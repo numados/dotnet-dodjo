@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  webapi:
+    build:
+      context: .
+      dockerfile: ./Airport.MeasureService.Api/Dockerfile
+    ports:
+      - "8081:80"
+    environment:
+      - ConnectionStrings__Redis=redis:6379 
+      - ASPNETCORE_ENVIRONMENT=Development    
+    networks:
+      - airport-network
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - airport-network
+
+networks:
+  airport-network:
